@@ -1,7 +1,6 @@
 import { combineReducers } from "redux";
 
 import {ADD_TODO, TODO_TOGGLED, TODO_REMOVED} from "./actions";
-import {stat} from "@babel/core/lib/gensync-utils/fs";
 
 const todos = (state = [], {type, payload}) => {
   switch (type) {
