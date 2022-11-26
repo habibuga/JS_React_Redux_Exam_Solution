@@ -1,28 +1,27 @@
+import React from "react";
 import { connect } from 'react-redux';
-
-import { toggle, remove } from '../redux/actions';
-
+import { toggle, remove, removeDelayed } from '../redux/actions';
 import List from '../components/List';
 
-const selectTasks = (state, status) => {
-    if (status === 'done') {
-        return state.filter(t => t.done);
-    }
-
-    if (status === 'not-done') {
-        return state.filter(t => !t.done);
-    }
-
-    return state;
-}
-
-const mapStateToProps = (state, ownProps) => ({
-    items: selectTasks(state.todos, ownProps.match.params.filter),
+const mapStateToProps = ({todos}, ownProps) => ({
+    todos: todos.filter(todo => {
+        switch (ownProps.filter) {
+            case undefined:
+                return true;
+            case "done":
+                return todo.done;
+            case "not-done":
+                return  !todo.done;
+            default:
+                return false;
+        }
+    })
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    toggle: (payload) => dispatch(toggle(payload)),
-    remove: (payload) => dispatch(remove(payload))
+    toggle: todo => dispatch(toggle(todo)),
+    remove: todo => dispatch(remove(todo)),
+    asyncRemove: todo => dispatch(removeDelayed(todo))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(List);

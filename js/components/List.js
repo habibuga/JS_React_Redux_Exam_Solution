@@ -1,19 +1,38 @@
 import React from "react";
 
-const List = ({items, toggle, remove, asyncRemove}) => {
+const List = ({todos, toggle, remove, asyncRemove}) => {
+    const handleRemove = (e) => {
+        e.preventDefault();
+        remove(e.target.name)
+    }
+
+    const handleAsyncRemove = e => {
+        e.preventDefault();
+        asyncRemove(e.target.name)
+    }
+
     return (
         <ul>
-            {items.map((t, index) => <li key={index} style={{ textDecoration: t.done ? 'line-through' : '' }}>
-                <span onClick={() => toggle(t.title)}>{t.title}</span><button onClick={() => remove(t.title)}>Usuń</button></li>)}
+            {todos.map((item, index) => {
+                const styleDone = {textDecoration: item.done && "line-through"}
+                return (
+                    <li key={index} >
+                        <span name={item.title} id={item.title} style={styleDone}
+                            onClick={() => toggle(item.title)}>{item.title}
+                        </span>
+
+                        <button name={item.title}
+                                onClick={handleRemove}>Usuń
+                        </button>
+
+                        <button name={item.title}
+                                onClick={handleAsyncRemove}>Usuń po 2 sec
+                        </button>
+                    </li>
+                )
+            })}
         </ul>
     )
-}
-
-List.propTypes = {
-  items: PropTypes.array,
-  toggle: PropTypes.func, // zad 4
-  remove: PropTypes.func, // zad 5
-  asyncRemove: PropTypes.func //zad7
 }
 
 export default List;

@@ -3,18 +3,17 @@ import React, { useState } from "react";
 const Form = ({addToDo}) => {
     const [input, setInput] = useState('');
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        addToDo(input)
+    }
+
     return (
-        <form>
-            <input value={input} onChange={(e) => setInput(e.target.value)} type="text" id="todoName" name="todoName" />
-            <button type="submit" onClick={(e) => {
-                e.preventDefault();
-                return addToDo({ done: false, title: input })}}>Dodaj</button>
+        <form onSubmit={handleSubmit}>
+            <input type="text" onChange={(e) => setInput(e.target.value)} id="todoName" name="todoName" value={input}/>
+            <button type="submit" >Dodaj</button>
         </form>
     )
-}
-
-Form.propTypes = {
-  addToDo: PropTypes.func
 }
 
 export default Form;
